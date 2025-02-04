@@ -1,11 +1,28 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from werkzeug.utils import secure_filename
 import re
+import os
+import pdfplumber
 
+
+import resume_parser
 import resume_job_matcher
 
+
 app = Flask(__name__)
+
+# app.secret_key = "my_secret_key"
+
+# Upload folder & allowed extensions
+upload_folder = os.path.join(os.getcwd(), "uploads")
+allowed_extensions = {'pdf'}
+app.config['upload_folder'] = upload_folder
+
+
+if not os.path.exists(upload_folder):
+    os.mkdir(upload_folder)
 
 
 # Flask
