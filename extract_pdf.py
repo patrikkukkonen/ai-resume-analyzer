@@ -1,14 +1,26 @@
 import pdfplumber
 
 
-# Improved version with parsing a pdf file with pdfplumber
-# Open pdf
-def extract_pdf(resume_name):
-    pdf = pdfplumber.open(resume_name)
-    page = pdf.pages[0]
+# PDF Extraction Function
+# Parsing a pdf file with pdfplumber
+def extract_text_from_pdf(pdf_path):
+    """Extract text from pdf file using pdfplumber."""
+    text = ""
+    try:
+        with pdfplumber.open(pdf_path) as pdf:
+            # Loop trough each page incase the pdf has multiple pages
+            for page in pdf.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    text += page_text + "\n"
+    except Exception as e:
+        print("Error reading the PDF file: ", e)
+    print(text)  # For debugging
+    return text
+
+    # page = pdf.pages[0]
     # Extract text
-    text = page.extract_text()
-    print(text)
+    # text = page.extract_text()
 
     # Extract to tables
     # tables = page.extract_table()
@@ -21,4 +33,4 @@ def extract_pdf(resume_name):
     # sections = re.split(r'\n(?=[A-Z][a-z]+:)', text)
     # print("SECTiONS: ", sections)
 
-    return text
+    # return text
