@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>AI Resume Analyzer</title>
+    <style>
+        body {}
+        textarea {}
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>AI Resume Analyzer</h1>
+
+    <!-- Error handling -->
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <!-- Form -->
+    <form method="POST">
+        <div>
+            <label for="resume_text">Resume Text:</label>
+            <textarea name="resume_text" id="resume_text" placeholder="Paste resume text here...">{{ resume_text or '' }}</textarea>
+        </div>
+        <br>
+        <div>
+            <label for="job_description">Job Description:</label>
+            <textarea name="job_description" id="job_description" placeholder="Paste job description here...">{{ job_description or '' }}</textarea>
+        </div>
+        <br>
+        <button type="submit">Compute Match Score</button>
+    </form>
+
+
+    {% if match_percentage is not none %}
+    <div class="result">
+        <p>Match score: {{ match_percentage }}%</p>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
