@@ -10,16 +10,14 @@ from extract_pdf import extract_text_from_pdf
 import resume_parser
 from resume_job_matcher import compute_similarity
 
-
 app = Flask(__name__)
 
-# app.secret_key = "my_secret_key"
+app.secret_key = "my_secret_key"
 
 # Upload folder & allowed extensions
 upload_folder = os.path.join(os.getcwd(), "uploads")
 allowed_extensions = {'pdf'}  # allow only pdf (for now)
 app.config['upload_folder'] = upload_folder
-
 
 if not os.path.exists(upload_folder):
     os.mkdir(upload_folder)
@@ -37,11 +35,14 @@ def index():
         # Get resume text and job description text from form data
         resume_text = request.form.get("resume_text", "")
         job_description = request.form.get("job_description", "")
-        pdf_file = request.files.get("pdf_file")
+        print(f"job_desc: {job_description}")
+        pdf_file = request.files.get('pdf_file')
+        print(f'pdf_file: {pdf_file}')
 
         # Error handling for not filled fields
         if not job_description:  # not resume_text or
             error = "Provide job description!"
+            print("Error happened!")
             return render_template("index.html", error=error)
 
         if pdf_file and allowed_file(pdf_file.filename):
@@ -49,6 +50,7 @@ def index():
             pdf_path = os.path.join(app.config['upload_folder'], filename)
             pdf_file.save(pdf_path)
             extracted_text = extract_text_from_pdf(pdf_path)
+            print("extracted_text") ### DOES NOT EXTRACT TEXT FROM PDF
             # Delete file after extraction (optional)
             # os.remove(pdf_path)
             resume_text = extracted_text
