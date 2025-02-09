@@ -1,5 +1,7 @@
 import pdfplumber
 
+import pdfminer # Try pdf extraction with pdfminer.six
+
 
 # PDF Extraction Function
 # Parsing a pdf file with pdfplumber
