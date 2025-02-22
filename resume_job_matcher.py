@@ -1,6 +1,9 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from preprocess_text import preprocess_text
+
+# Matching function using TF-IDF and cosine similarity
 
 def compute_similarity(resume_text, job_description):
     """
@@ -13,6 +16,9 @@ def compute_similarity(resume_text, job_description):
     Returns:
         float: Similarity score between 0 and 1.
     """
+
+    # resume_text = preprocess_text(resume_text)
+    # job_description = preprocess_text(resume_text)
 
     # Combine texts to build the TF-IDF vocabulary
     documents = [resume_text, job_description]
