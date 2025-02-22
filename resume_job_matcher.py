@@ -5,6 +5,7 @@ from preprocess_text import preprocess_text
 
 # Matching function using TF-IDF and cosine similarity
 
+
 def compute_similarity(resume_text, job_description):
     """
     Computes the cosine similarity between the resume text and the job description.
