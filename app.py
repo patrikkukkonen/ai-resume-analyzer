@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, make_response, redirect, url_for, flash
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from werkzeug.utils import secure_filename
@@ -29,8 +29,34 @@ def allowed_file(filename):
 
 
 # Flask
+
+@app.route('/set_theme/<theme>')
+def set_theme(theme):
+    response = make_response(redirect(url_for('index')))
+    response.set_cookie('theme', theme, max_age=60*60*24*30)  # Store cookie for 30 days
+    return response
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
+
+    theme = request.cookies.get('theme', 'dark')  # Default to 'dark' if no cookie is found
+
+    # Toggle dark/light mode (for future)
+    #if request.method == 'POST':
+    #    theme = 'dark' if request.form.get('theme') == 'on' else 'light'
+    #    response = make_response(render_template('index.html', theme=theme))
+    #    response.set_cookie('theme', theme, max_age=60*60*24*30)  # Store cookie for 30 days
+    #    return response
+
+
+
+    # if 'theme' not in session:
+    #    session['theme'] = 'dark'  # Default theme
+
+    # if request.method == 'POST':
+    #    session['theme'] = 'dark' if request.form.get('theme') == 'on' else 'light'
+
     if request.method == "POST":
         # Get resume text and job description text from form data
         resume_text = request.form.get("resume_text", "")
@@ -50,9 +76,8 @@ def index():
             pdf_path = os.path.join(app.config['upload_folder'], filename)
             pdf_file.save(pdf_path)
             extracted_text = extract_text_from_pdf(pdf_path)
-            print("extracted_text") ### DOES NOT EXTRACT TEXT FROM PDF
             # Delete file after extraction (optional)
-            # os.remove(pdf_path)
+            os.remove(pdf_path)
             resume_text = extracted_text
         elif not resume_text:
             # If no PDF nor text provided, return error
@@ -69,7 +94,7 @@ def index():
                                resume_text=resume_text,
                                job_description=job_description)
 
-    return render_template("index.html")
+    return render_template("index.html", theme=theme)
 
 
 if __name__ == "__main__":
