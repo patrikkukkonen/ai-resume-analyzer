@@ -1,58 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AI Resume Analyzer</title>
+    <title>Resume Analyzer</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        body { margin-top: 40px; }
+        .container { max-width: 800px }
+        .result { margin-top: 20px; font-weight: bold; }
+    </style>
+
+    <!--<style>
         body { font-family: Arial, sans-serif; margin: 40px; }
         textarea { width: 100%; height: 150px; }
         .container { max-width: 800px; margin: auto;}
         .error { color: red; }
         .result { margin-top: 20px; font-weight: bold; }
-    </style>
+    </style>-->
 </head>
 
 <body>
 <div class="container">
-    <h1>AI Resume Analyzer</h1>
+    <h1 class="mb-4">AI Resume Analyzer</h1>
 
     <!-- Error handling -->
     {% if error %}
-        <p class="error">{{ error }}</p>
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
     {% endif %}
 
     <!-- Form -->
     <form method="POST" enctype="multipart/form-data">
-        <div>
-            <label for="resume_text">Resume Text:</label>
-            <textarea name="resume_text" id="resume_text" placeholder="Paste resume text here...">{{ resume_text or '' }}</textarea>
+
+        <div class="form-group">
+            <label for="resume_text">Resume Text: <small class="text-muted">(if uploading PDF)</small></label>
+            <textarea name="resume_text" id="resume_text" class="form-control" rows="5" placeholder="Paste resume text here...">{{ resume_text or '' }}</textarea>
         </div>
 
-        <br>
+        <!--<br>-->
 
-        <div>
+        <div class="form-group">
             <label for="pdf_file"> Or upload a PDF resume:</label>
-            <input type="file" name="pdf_file" id="pdf_file" accept=".pdf">
+            <input type="file" name="pdf_file" id="pdf_file" class="form-control-file" accept=".pdf">
         </div>
 
-        <br>
+        <!--<br>-->
 
-        <div>
+        <div class="form-group">
             <label for="job_description">Job Description:</label>
-            <textarea name="job_description" id="job_description" placeholder="Paste job description here...">{{ job_description or '' }}</textarea>
+            <textarea name="job_description" id="job_description" class="form-control" rows="5" placeholder="Paste job description here...">{{ job_description or '' }}</textarea>
         </div>
 
-        <br>
+        <!--<br>-->
 
-        <button type="submit">Compute Match Score</button>
+        <button type="submit" class="btn btn-primary">Compute Match Score</button>
     </form>
 
 
     {% if match_percentage is not none %}
-    <div class="result">
-        <p>Match score: {{ match_percentage }}%</p>
+    <div class="result alert alert-info mt-4">
+        <p>Match score: <strong>{{ match_percentage }}%</strong></p>
     </div>
     {% endif %}
 </div>
+    <!-- Bootstrap dependecies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>
